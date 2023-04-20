@@ -1,45 +1,77 @@
-const timer = document.querySelector('.timer');
-let second = 0;
-let control;
+//selecionando elementos a serem trabalhados
+const inputTask = document.querySelector('.new-task');
+const buttonTask = document.querySelector('.button-task');
+const tasks = document.querySelector('.tasks');
 
+recoverTasks();
 
-document.addEventListener('click',function(event){
-    const element = event.target;
-
-    if(element.classList.contains('start'))
-    {
-        clearInterval(control);
-        addSecond()
-        timer.classList.remove('red');
+inputTask.addEventListener('keypress', function(e){
+    if(e.keyCode === 13){
+        if(!inputTask.value) return;
+        newElement(inputTask.value);
     }
-
-    if(element.classList.contains('pause'))
-    {
-        clearInterval(control);
-        timer.classList.add('red');
-    }
-
-    if(element.classList.contains('reset'))
-    {
-        clearInterval(control);
-        second = 0
-        timer.classList.remove('red');
-        timer.innerHTML = '00:00:00';
-    }
-
 });
 
-function addSecond()
-{
-    control = setInterval(function () {
-        second++;
-        timer.innerHTML = setHourSeconds(second);
-    }, 1000)
+buttonTask.addEventListener('click', function(){
+    if(!inputTask.value) return;
+    newElement(inputTask.value);
+});
+
+document.addEventListener('click', function(e){
+    deletTask(e);
+});
+
+function recoverTasks(){
+    const recoverTask = localStorage.getItem('tasks');
+    const taskListRecovered = JSON.parse(recoverTask);
+
+    for (let task of taskListRecovered){
+        newElement(task);
+    }
+
 }
-function setHourSeconds(second) {
-    const date_ = new Date(second * 1000);
-    return date_.toLocaleTimeString('pt-BR', {
-        hour12: false,
-        timeZone: 'GMT'
-    })
+
+//salva as tasks
+function save(){
+    const itens = tasks.querySelectorAll('li');
+    const taskList = [];
+
+    for (let task of itens){
+        let taskText = task.innerText;
+        taskText = taskText.replace('Delet', '').replace('-----', '').trim(); //apaga texto desnecessário
+        taskList.push(taskText);
+    }
+    const taskJSON = JSON.stringify(taskList);
+    localStorage.setItem('tasks', taskJSON);
+}
+
+//apaga a task selecionada
+function deletTask(e){
+    const elemento = e.target;
+    if(elemento.classList.contains('delet')) {
+        elemento.parentElement.remove();
+        
+    }
+    save();
+}
+//cria botão "delet"
+function creatBtnDel(){
+    const buttonDel = document.createElement('button');
+    buttonDel.classList.add('delet');
+    buttonDel.innerText = 'Delet';
+    return buttonDel;
+}
+//limpa o input
+function clearInput(){
+    inputTask.value = '';
+    inputTask.focus();
+}
+//cria nova tarefa e adiciona botão delet
+function newElement(text){
+    const list = document.createElement('li');
+    list.innerHTML = text + ' ----- ';
+    tasks.appendChild(list);
+    list.appendChild(creatBtnDel());
+    clearInput();
+    save();
 }
