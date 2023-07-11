@@ -22,8 +22,10 @@ document.addEventListener('click', function(e){
 });
 
 function recoverTasks(){
-    const recoverTask = localStorage.getItem('tasks');
+    const recoverTask = window.localStorage.getItem('tasks');
     const taskListRecovered = JSON.parse(recoverTask);
+
+    if(taskListRecovered == null) return;
 
     for (let task of taskListRecovered){
         newElement(task);
@@ -69,7 +71,7 @@ function clearInput(){
 //cria nova tarefa e adiciona botão delet
 function newElement(text){
     const list = document.createElement('li');
-    list.innerHTML = text + ' ----- ';
+    list.innerText = text + ' ----- ';
     tasks.appendChild(list);
     list.appendChild(creatBtnDel());
     clearInput();
