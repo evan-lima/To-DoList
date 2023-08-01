@@ -47,16 +47,23 @@ button:active{
 }
 
 @media (max-width: 980px) {
+  h1{
+    font-size: 4em;
+  }
   .container{
     display: grid;
+    max-width: 90vw;
     
   }
   .new-task{
-    font-size: 0.5rem;
-    font-size: large;
+    justify-self: center;
+    width: 50dvw;
+    font-size: 1em;
+    padding: 0.5rem;
     margin-bottom: 2rem;
   }
   .button-task{
+    font-size: 1em;
     width: 30dvw;
     justify-self: center;
     padding: 0.5rem;
