@@ -45,3 +45,22 @@ button:active{
   transform: scale(0.98);
   background-color: rgb(188, 113, 113);
 }
+
+@media (max-width: 980px) {
+  .container{
+    display: grid;
+    
+  }
+  .new-task{
+    font-size: 0.5rem;
+    font-size: large;
+    margin-bottom: 2rem;
+  }
+  .button-task{
+    width: 30dvw;
+    justify-self: center;
+    padding: 0.5rem;
+  }
+
+
+}
